@@ -54,29 +54,7 @@ class Contact {
     }
 }
 
-// Example Usage:
-try {
-    let contact1 = new Contact(
-        "John", "Doe", "123 Main St", "New York", "NY", "123456", "9876543210", "john.doe@example.com"
-    );
-    console.log(contact1.toString());
-} catch (error) {
-    console.error(error.message);
-}
-
-try {
-    let contact2 = new Contact(
-        "jo", "smith", "xyz", "NY", "NY", "123", "12345678", "invalid.email"
-    ); // This should throw an error
-} catch (error) {
-    console.error(error.message);
-}
-try {
-    let contact2 = new Contact(
-        "jo", "smith", "xyz", "NY", "NY", "123", "12345678", "invalid.email"
-    ); // This should throw an error
-} catch (error) {
-    console.error(error.message);
-}
 
 
+
+module.exports = Contact;
