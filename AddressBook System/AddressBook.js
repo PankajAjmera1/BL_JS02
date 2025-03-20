@@ -31,14 +31,30 @@ class AddressBook {
             return;
         }
 
-        // Updating only the provided fields
-        Object.keys(updatedDetails).forEach(key => {
-            if (contact.hasOwnProperty(key)) {
-                contact[key] = updatedDetails[key];
-            }
-        });
+        try {
+            // Apply validation before updating
+            Object.keys(updatedDetails).forEach(key => {
+                if (contact.hasOwnProperty(key)) {
+                    if (key === "firstName" || key === "lastName") {
+                        contact[key] = contact.validateName(updatedDetails[key], key);
+                    } else if (key === "address" || key === "city" || key === "state") {
+                        contact[key] = contact.validateAddressCityState(updatedDetails[key], key);
+                    } else if (key === "zip") {
+                        contact[key] = contact.validateZip(updatedDetails[key]);
+                    } else if (key === "phone") {
+                        contact[key] = contact.validatePhone(updatedDetails[key]);
+                    } else if (key === "email") {
+                        contact[key] = contact.validateEmail(updatedDetails[key]);
+                    } else {
+                        contact[key] = updatedDetails[key]; // Assign other properties directly
+                    }
+                }
+            });
 
-        console.log(`Contact ${firstName} ${lastName} updated successfully!`);
+            console.log(`Contact ${firstName} ${lastName} updated successfully!`);
+        } catch (error) {
+            console.error(`Error updating contact: ${error.message}`);
+        }
     }
 }
 
@@ -47,14 +63,14 @@ try {
     let addressBook = new AddressBook();
 
     let contact1 = new Contact(
-        "John", "Doe", "123 Main St", "New York", "NY", "123456", "9876543210", "john.doe@example.com"
+        "John", "Doe", "123 Main St", "New York", "NewYork", "123456", "9876543210", "john.doe@example.com"
     );
     
     addressBook.addContact(contact1);
     addressBook.displayContacts();
 
-    // Editing Contact
-    addressBook.editContact("John", "Doe", { address: "456 Park Ave", city: "Los Angeles", phone: "9123456789" });
+    // Editing Contact with validation
+    addressBook.editContact("John", "Doe", { address: "456 Park Ave", city: "Los Angeles", state: "CA", phone: "9123456789" });
 
     addressBook.displayContacts(); // Updated Contact Details
 } catch (error) {
